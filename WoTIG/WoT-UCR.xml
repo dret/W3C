@@ -45,6 +45,8 @@
         <ul>
             <li reqref="resource-description">At some point in the system, the measurement value has to be enriched with some meta-information (e.g., timestamp, unit, id, ...).</li>
             <li reqref="data-exchange-format">The bakery's order management has to interact with the order management system of the delivery company.</li>
+            <li reqref="object-memory">...</li>
+            <li reqref="layered-comm">Given a commonality of interfacing protocols to heterogeneous ordering systems, layered communication enables a better reusability across several ordering systems. While the interaction primitives, transport protocol and representation might likely be the same for many systems, a difference in data structure demands a clear layering of the communication.</li>
         </ul>
     </usecase>
     <usecase id="adaptive-building" author="h0ru5">
@@ -56,6 +58,7 @@
             <li reqref="multi-stakeholder-operation">Multiple people in the same room require automatic mediation of desired comfort levels.</li>
             <li reqref="lifecycle-mgmt">The appearance and disappearance of users requires means to orchestrate the lifecycle of users/stakeholders.</li>
             <li reqref="resource-description">The environment around a user must be conceivable by the system in a way that does not require manual engineering.</li>
+            <li reqref="privacy">...</li>
         </ul>
     </usecase>
     <usecase id="shift-of-function" author="h0ru5">
@@ -67,6 +70,7 @@
             <li reqref="lifecycle-mgmt">The appearance and disappearance of devices as well as the software management on the devices itself requires means to orchestrate the lifecycle of individual devices resp. components.</li>
             <li reqref="resource-description">At some point in the system, the measurement value has to be enriched with some meta-information (e.g., timestamp, unit, id, ...).</li>
             <li reqref="layered-comm">In heterogeneous systems, the seamless shift of functionality requires a clear and consistent layering of application protocols since the functionality is focused on the data structure and should be agnostic of the underlying application layer protocol layers.</li>
+            <!-- embedded is a must -->
         </ul>
     </usecase>
     <usecase id="vpp" author="h0ru5">
@@ -80,6 +84,11 @@
             <li reqref="ensemble-discovery">In order to dynamically find matching DERs needed for the operational goal of a VPP, a registry with different options of DER discovery is needed.</li>
             <li reqref="data-exchange-format">The different stakeholders have to interact and therefore need a common data format.</li>
             <li reqref="resource-description">The DER has to describe itself to enable discovery of single DERs and ensembles, also the operational data needs to be understood by the different stakeholders without engineering effort.</li>
+            <li reqref="push">...</li>
+            <li reqref="privacy">...</li>
+            <li reqref="trust">...</li>
+            <li reqref="object-memory">...</li>
+            <li reqref="layered-comm">Since multiple different links are used for monitoring and control, integration requires a clear and consistent seperation of information from the used serilization and application protocols to enable the exchange of homogenous information over heterogenous application layer protocols</li>
         </ul>
     </usecase>
     <usecase id="automation-factories" author="stefan">
@@ -90,15 +99,21 @@
         <ul>
             <li reqref="resource-description">At some point in the system, the data has to be enriched with some meta-information (e.g. timestamp, unit, id).</li>
             <li reqref="interaction-mechanism">The platform has to provide interaction mechanisms to provide data to the applications.</li>
+            <li reqref="database">The platform needs a database to store the collected data.</li>
         </ul>
     </usecase>
     <usecase id="emobility" author="h0ru5">
         <title>E-Mobility</title>
-        <p>...</p>
+        <p>Te process of charging an e-car diverts greatly from a simple pumping of gas. It involves several players apart from the obvious car, chargespot and car owner, such as electricity providers and clearing houses</p>
+        <p>An e-car and the chargespot negotiate different parameters affecting the charging process, such as voltages, currents, time it takes to charge etc., but also information like how the electricity will be payed for, how much was already transferred etc.</p>
         <ul>
             <li reqref="lifecycle-mgmt">Managing EVs and Fleets such as buses, cars etc. requires the ability to handle dynamic systems.</li>
             <li reqref="data-exchange-format">A standardized data format is needed when different transport/electricity providers and different devices are involved.</li>
             <li reqref="push">Both components may want to be notified of certain events in the charging system, without having to listen to a continuous event stream from it. This allows a more lightweight implementation.</li>
+            <li reqref="trust">Since a financial transaction is directly involved, it is important that both sides can enter a trust relationship.</li>
+            <li reqref="integrity">To avoid man-in-the middle attacks and fraud by alteration, the integrity of all exchanges messages must be confirmable</li>
+            <li reqref="object-memory">...</li>
+            <li reqref="layered-comm">Since the same data contents are transferred over several communication links (such as vehicle to charger, charger to driver's smartphone, charger to grid/backend, vehicle to fleet operation, etc.), it is neccessary that the communication of the information/contets can be transferred independent of the different transports or serialization formats used</li>
         </ul>
     </usecase>
     <usecase id="lifecycle-management" author="darko">
@@ -113,6 +128,7 @@
             <li reqref="ensemble-discovery">Resources need be discoverable based on their Resource Description (e.g., properties, functionalities and roles). The discovery also needs to be enabled in a dynamic environment where physical resources appear and disappear during lifecycle phases.</li>
             <li reqref="lifecycle-mgmt">Different stakeholders interact with different resources throughout different lifecycle phases, e.g., same resources may be used transparently in the development phase as well as in the operation phase.</li>
             <li reqref="multi-stakeholder-operation">Lifecycle management of Industrial Automation Systems involves multi-stakeholders (e.g., domain engineers, software engineers, system engineers, system installers etc.).</li>
+            <li reqref="layered-comm">In heterogeneous systems, where several vendors use different flavors of the same data exchange in terms of data representation or  transport protocols, integration requires a clear and consistent layering of application protocols.</li>
         </ul>
     </usecase>
     <req id="resource-description">
@@ -149,9 +165,44 @@
         <title>Resource Choreography</title>
         <p>A language that enables resources to be choreographed, parametrized, wired and invoked. The language also features a communication protocol which enables collaboration during these tasks (e.g., checks constraints when resources are combined).</p>
     </req>
+    <req id="synchronous">
+        <title>Synchronicity, soft real-time</title>
+        <p>Whenever a user interacts with a WoT system or also in many M2M cases a crucial acceptance factor is the time between the input and the reaction</p>
+    </req>
+    <req id="privacy">
+        <title>Privacy</title>
+        <!-- http://www.w3.org/2005/Incubator/socialweb/XGR-socialweb-20101206/#Privacy might be interesting. -->
+        <p>A data surce resp. the owner of this data needs to be able to decide who is allowed to see what data and methods are needed to define and enforce this in a secure yet pragmatic way</p>
+    </req>
+    <req id="integrity">
+        <title>Integrity</title>
+        <p>In some Wot appications,  the integrity and dependability of data needs to be provable. Ensuring that the data was not altered and is genuine is a common requirement of all systems operating in public networks</p>
+    </req>
+    <req id="trust">
+        <title>Trust</title>
+        <p>The mutual trust into the respective peer's identity  is of high importance especially in systems and applications interacting with physical entites</p>
+    </req>
+    <req id="object-memory">
+        <title>Object Memory</title>
+        <p>keeping a history / digital twin of a physical object that serves as a proxy or avatar</p>
+        <!-- wondering how this relates to the "database" requirement. any clear overlap/similarities/differences? -->
+    </req>
+    <req id="database">
+        <title>Database</title>
+        <p>...</p>
+    </req>
     <req id="interaction-mechanism">
         <title>Interaction Mechanism</title>
         <p>...</p>
+    </req>
+    <req id="layered-comm">
+        <title>Layered L7 Communication</title>
+        <p>when services interact with a plethora of clients, a distinction of diffenrent layers of information exchange is a well-known way to ensure interoperability. <!-- requirement "data exchange format"? --></p>
+    	<p>this means a layering of the OSI application layer 7:</p>
+    	<p>a transport (HTTP, CoAP, XMPP, MQTT...) will enable basic exchange and negiotin of formatted data</p>
+    	<p>independent of a tranport, several interaction primitives (Request-response,Pub-sub, Message...) are possible</p>
+    	<p> the transferred data is to be seperated into the representation (JSON, XML, EXI...) that is used to serialize a data structure (Schema, DTD ...) <!--  this last two points I would see matching partly with data exchange format, however, the whole block is more about an elevation of Content-negotiation --></p>
+    	<p> This enables the communication of a resource to be implementation-independent</p>
     </req>
     <tech id="rdf" href="http://www.w3.org/RDF/">
         <title>Resource Description Framework (RDF)</title>
@@ -170,7 +221,9 @@
         <title>Extensible Messaging and Presence Protocol (XMPP)</title>
         <p>The Extensible Messaging and Presence Protocol (XMPP) is an application profile of the Extensible Markup Language (XML) that enables the near-real-time exchange of structured yet extensible data between any two or more network entities. This document defines XMPP's core protocol methods: setup and teardown of XML streams, channel encryption, authentication, error handling, and communication primitives for messaging, network availability ("presence"), and request-response interactions.</p>
         <ul>
-            <li reqref="data-exchange-format">...</li>
+            <li reqref="push">being based on a bidirectional link, XMPP offers a standardized publish/subscribe scheme</li>
+            <li reqref="layered-comm">The protocol consists of a link layer that can be TCP/TLS, BOSH or WebSocket, and an XML-based protocol on top of it</li>
+            <li reqref="data-exchange-format">The protocol and payloads are described as XML Schemas, enabling other serializations (such as xmpp-ftw in JSON)</li>
         </ul>
     </tech>
     <tech id="exi" href="http://www.w3.org/TR/exi/">
