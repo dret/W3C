@@ -900,7 +900,7 @@
           
           <c><spanx style="verb">types</spanx></c>
           <c><xref target="RFC4627">JSON</xref> Array</c>
-          <c>An array of one or more absolute IRI's that describe the type of
+          <c>An array of one or more absolute IRIs that describe the type of
           issue represented by the object.</c>
           </texttable>
         
